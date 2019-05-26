@@ -41,9 +41,17 @@ module.exports = function statement(invoice, plays) {
         return result;
     }
 
+    function totalAmount(data) {
+        let result = 0;
+        for (let perf of data.performances) {
+            result += perf.amount;
+        }
+        return result;
+    }
     const statementData = {};
     statementData.customer = invoice.customer;
     statementData.performances = invoice.performances.map(enrichPerformance);
+    statementData.totalAmount = totalAmount(statementData);
     return renderPlainText(statementData, plays);
 };
 
@@ -65,21 +73,11 @@ function renderPlainText(data) {
         }
         return result;
     }
-
-    function totalAmount() {
-        let result = 0;
-        for (let perf of data.performances) {
-            result += perf.amount;
-        }
-        return result;
-    }
-
     for (let perf of data.performances) {
-        // print line for this order
         result += `  ${perf.play.name}: ${usd(perf.amount)} (${perf.audience} seats)\n`;
     }
 
-    result += `Amount owed is ${usd(totalAmount())}\n`;
     result += `You earned ${totalVolumeCredits()} credits\n`;
+    result += `Amount owed is ${usd(data.totalAmount)}\n`;
     return result;
 }
