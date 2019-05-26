@@ -46,11 +46,7 @@ module.exports = function statement(invoice, plays) {
     }
 
     function totalVolumeCredits(data) {
-        let result = 0;
-        for (let perf of data.performances) {
-            result += perf.volumeCredits;
-        }
-        return result;
+        return data.performances.reduce((total, performance) => total + performance.volumeCredits, 0);
     }
 
     const statementData = {};
