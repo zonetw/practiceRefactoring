@@ -57,16 +57,16 @@ module.exports = function statement(invoice, plays) {
     return renderPlainText(statementData, plays);
 };
 
+function usd(aNumber) {
+    return new Intl.NumberFormat("en-US",
+        {
+            style: "currency", currency: "USD",
+            minimumFractionDigits: 2
+        }).format(aNumber / 100);
+}
+
 function renderPlainText(data) {
     let result = `Statement for ${data.customer}\n`;
-
-    function usd(aNumber) {
-        return new Intl.NumberFormat("en-US",
-            {
-                style: "currency", currency: "USD",
-                minimumFractionDigits: 2
-            }).format(aNumber / 100);
-    }
 
     for (let perf of data.performances) {
         result += `  ${perf.play.name}: ${usd(perf.amount)} (${perf.audience} seats)\n`;
