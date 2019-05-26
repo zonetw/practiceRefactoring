@@ -1,4 +1,8 @@
 module.exports = function statement(invoice, plays) {
+    return renderPlainText(invoice, plays);
+};
+
+function renderPlainText(invoice, plays) {
     let result = `Statement for ${invoice.customer}\n`;
 
     function amountFor(aPerformance) {
